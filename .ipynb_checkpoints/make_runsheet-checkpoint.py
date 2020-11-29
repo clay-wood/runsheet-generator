@@ -230,8 +230,22 @@ def sec8():
 \\textbf{D}       & x       & \\textbf{E-gain}         & x      & \\textbf{D}       & x       & \\textbf{E-gain}        & x      \\\\
 \\end{tabular}
 \\end{table}
-\\medskip 
-\n'''
+
+\n\n
+
+\\begin{table}[h!]
+\\scriptsize
+\\centering
+\\begin{tabular}{ll|ll|ll|ll}
+\\multicolumn{2}{c}{@ Hyd. Power Supply (HPS)} & \\multicolumn{2}{c}{Chilled water at HPS} & \\multicolumn{2}{c}{Chiller Unit} & \\multicolumn{2}{c}{Process water at Chiller} \\\\ \\hline
+14. Tank Temp. (C)  &  & 1. Temp. In (F)    &  & 6. Panel Temp. (F)      &  & 10. Temp. In (F)    &  \\\\
+15. Temp. Out (C)   &  & 2. Pres. In (psi)  &  & 7. Panel Pres. (psi)    &  & 11. Pres. In (psi)  &  \\\\
+16. Pres. Out (psi) &  & 3. Temp. Out (F)   &  & 8. Near Pres. In (psi)  &  & 12. Temp. Out (F)   &  \\\\
+                    &  & 4. Pres. Out (psi) &  & 9. Near Pres. Out (psi) &  & 13. Pres. Out (psi) &  \\\\
+                    &  & 5. Flow (lpm)      &  &                         &  &                     & 
+\\end{tabular}
+\\end{table}
+'''
     
     return section8
 

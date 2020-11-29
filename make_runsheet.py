@@ -217,6 +217,26 @@ def sec7(notes):
 
 
 
+def sec8():
+    
+    section8 = '''\\medskip \n\n \\renewcommand{\\arraystretch}{1}
+\\begin{table}[h!]
+\\footnotesize
+\\centering
+\\begin{tabular}{llll|llll}
+\\multicolumn{4}{c|}{Horiz. Servo Settings} & \\multicolumn{4}{c}{Vert. Servo Settings} \\\\ \\hline
+\\textbf{P}       & x       & \\textbf{D\\textsubscript{atten}}         & x      & \\textbf{P}       & x       & \\textbf{D\\textsubscript{atten}}        & x      \\\\
+\\textbf{I}       & x       & \\textbf{Feedback}       & x      & \\textbf{I}       & x       & \\textbf{Feedback}      & x      \\\\
+\\textbf{D}       & x       & \\textbf{E-gain}         & x      & \\textbf{D}       & x       & \\textbf{E-gain}        & x      \\\\
+\\end{tabular}
+\\end{table}
+\\medskip 
+\n'''
+    
+    return section8
+
+
+
 runsheet_header = '''\\documentclass[letterpaper,10pt]{article}
 \\usepackage{blindtext}
 \\usepackage{authblk}
@@ -257,6 +277,7 @@ def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo,
         pageAry.append(sec4(Vessel))
         pageAry.append(sec5(DCDTs))
         pageAry.append(sec6(ExpInfo))
+        pageAry.append(sec8())
         pageAry.append(sec7(notes))
         # pageAry.append('\n\n\\end{document}')
         return
@@ -265,6 +286,7 @@ def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo,
 
     for i in pageAry:
         outfile.writelines(i)
+        
     outfile.close()
     os.system("pdflatex " + FileName+'_Runsheet');
     

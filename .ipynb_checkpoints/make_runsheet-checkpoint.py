@@ -1,3 +1,6 @@
+### DEPENDENCIES: os, numpy, pandas ###
+### make_runsheet_v3, calibrations.csv MUST LIVE IN THE SAME DIRECTORY ###
+
 import os
 import numpy as np
 import pandas as pd
@@ -57,22 +60,29 @@ def sec1(Preamble):
 
 def sec2(Block_material):
     
-    section2 = '''\\textit{Sample Block Thickness w/ no gouge: } 
+    section2 = '''\\textit{Sample Block Thickness w/ no gouge: }'''+Block_material['Sample Block Thickness']+''' 
 \\bigskip
 
-\\textit{Layer Thickness (total on bench):} mm @sample
+\\textit{Layer Thickness (total on bench): }'''+Block_material['Layer Thickness']+''' mm @sample '''+Block_material['@sample']+'''
 
-\\textit{Under Load: mm}
+\\textit{Under Load: }'''+Block_material['Under Load']+''' mm
 
 \\textit{Material (Qtz, Granite, ?): }'''+Block_material['Material']+'''
 
-\\textit{Particle Size, Size Distribution :}
+\\textit{Particle Size, Size Distribution : }'''+Block_material['Size Dist']+'''
 \\bigskip \n\n'''
     
     return section2
 
 
-def sec3(Load_Cells,Block_material):    
+def sec3(Load_Cells,Block_material):
+    
+    table_hdr = '''
+\\begin{tabular}{ |p{2.75cm}|p{4cm}|p{3.5cm}|p{2.5cm}| p{3cm}| }
+    \\hline
+    \\textbf{Load cell name} & \\textbf{Calibrations (mV/kN)} & \\textbf{Target stress (MPa)} & \\textbf{Init. Voltage} & \\textbf{Volt. @ load}\\\\
+    \\hline
+    '''
     
     if Load_Cells['HorizLC'] != None:
         
@@ -80,14 +90,8 @@ def sec3(Load_Cells,Block_material):
         
         calibration, targ_volt = calc_stress(str(H_gain), Block_material['Area'], Load_Cells['H_Stress'],Load_Cells['H_init_V'])
         
-        section3_H = '''
-\\begin{tabular}{ |p{2.75cm}|p{4cm}|p{3.5cm}|p{2.5cm}| p{3cm}| }
-    \\hline
-    \\textbf{Load cell name} & \\textbf{Calibrations (mV/kN)} & \\textbf{Target stress (MPa)} & \\textbf{Init. Voltage} & \\textbf{Volt. @ load}\\\\
-    \\hline
-    '''+Load_Cells['HorizLC']+''' & \\begin{tabular}[c]{@{}l@{}}'''+str(round(H_gain,4))+'''\\\\ (V/MPa): '''+calibration+'''\\end{tabular} & '''+Load_Cells['H_Stress']+''' & '''+Load_Cells['H_init_V']+''' & '''+targ_volt+'''\\\\ 
-    \\hline
-\\end{tabular}'''
+        section3_H = Load_Cells['HorizLC']+''' & \\begin{tabular}[c]{@{}l@{}}'''+str(round(H_gain,4))+'''\\\\ (V/MPa): '''+calibration+'''\\end{tabular} & '''+Load_Cells['H_Stress']+''' & '''+Load_Cells['H_init_V']+''' & '''+targ_volt+'''\\\\ 
+    \\hline'''
     else:
         section3_H = '\n'
 
@@ -97,14 +101,8 @@ def sec3(Load_Cells,Block_material):
         
         calibration, targ_volt = calc_stress(str(V_gain), Block_material['Area'], Load_Cells['V_Stress'],Load_Cells['V_init_V'])
         
-        section3_V = '''
-\\begin{tabular}{ |p{2.75cm}|p{4cm}|p{3.5cm}|p{2.5cm}| p{3cm}| }
-    \\hline
-    \\textbf{Load cell name} & \\textbf{Calibrations (mV/kN)} & \\textbf{Target stress (MPa)} & \\textbf{Init. Voltage} & \\textbf{Volt. @ load}\\\\
-    \\hline
-    '''+Load_Cells['VertLC']+''' & \\begin{tabular}[c]{@{}l@{}}'''+str(round(V_gain,4))+'''\\\\ (V/MPa): '''+calibration+'''\\end{tabular} & '''+Load_Cells['V_Stress']+''' & '''+Load_Cells['V_init_V']+''' & '''+targ_volt+'''\\\\ 
-    \\hline
-\\end{tabular}'''
+        section3_V = Load_Cells['VertLC']+''' & \\begin{tabular}[c]{@{}l@{}}'''+str(round(V_gain,4))+'''\\\\ (V/MPa): '''+calibration+'''\\end{tabular} & '''+Load_Cells['V_Stress']+''' & '''+Load_Cells['V_init_V']+''' & '''+targ_volt+'''\\\\ 
+    \\hline'''
     else:
         section3_V = ''
 
@@ -113,7 +111,8 @@ def sec3(Load_Cells,Block_material):
     \\textbf{\\textit{Load Cells:}} & Contact Area: '''+Block_material['Area']+''' $ m^2 $ \\\\
 \\end{tabular}\n
 
-\\renewcommand{\\arraystretch}{1.5}'''+section3_H+section3_V+'''
+\\renewcommand{\\arraystretch}{1.5}'''+table_hdr+section3_H + section3_V+'''
+\\end{tabular}
 \\bigskip \n'''
     
     return section3
@@ -156,7 +155,7 @@ def sec4(Vessel):
         section4 = '''
         \\renewcommand{\\arraystretch}{1}
     \\begin{tabular}{ p{11cm} p{10cm} }
-        \\textbf{\\textit{Vessel Pressure:}} & Pore Fluid: '''+Vessel['PoreFluid']+''' \\
+        \\textbf{\\textit{Vessel Pressures:}} & Pore Fluid: '''+Vessel['PoreFluid']+''' \\
     \\end{tabular}\n
     \\renewcommand{\\arraystretch}{1.5}
     \\begin{tabular}{ p{1cm}|p{4cm}|p{4.75cm}|p{2.5cm}| p{3.5cm}| }
@@ -202,26 +201,75 @@ def sec6(ExpInfo):
 
 def sec7(notes):
     
-    w = [x.split('\n') for x in notes][0]
-    w4 = [x for x in w if x]
-    updated_notes = list(map(lambda x: '\t \\item ' + x +'\n ', w4))
-    updated_notes = ''.join(updated_notes)
-    
-    section7 = '''\\newpage \n \\textbf{Experiment Notes}\n \\medskip\n {\\small \\begin{itemize}[label=\\#]\n \setlength\itemsep{0.25em}\n '''+updated_notes+'''\\end{itemize}} \n\n \\end{document}'''
-    
+    if notes != None:
+        w = [x.split('\n') for x in notes][0]
+        w4 = [x for x in w if x]
+        updated_notes = list(map(lambda x: '\t \\item ' + x +'\n ', w4))
+        updated_notes = ''.join(updated_notes)
+
+        section7 = '''\\newpage \n \\textbf{Experiment Notes}\n \\medskip\n {\\small \\begin{itemize}[label=\\#]\n \setlength\itemsep{0.25em}\n '''+updated_notes+'''\\end{itemize}} \n\n \\end{document}'''
+        
+    else: 
+        section7 = '''\\newpage \n \\textbf{Experiment Notes} \n\n \\end{document}'''
+        
     return section7
 
 
 
-def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo, notes):
+
+def sec8():
+    
+    section8 = '''\\medskip \n\n \\renewcommand{\\arraystretch}{1}
+\\begin{table}[h!]
+\\footnotesize
+\\centering
+\\begin{tabular}{llll|llll}
+\\multicolumn{4}{c|}{Horiz. Servo Settings} & \\multicolumn{4}{c}{Vert. Servo Settings} \\\\ \\hline
+\\textbf{P}       & x       & \\textbf{D\\textsubscript{atten}}         & x      & \\textbf{P}       & x       & \\textbf{D\\textsubscript{atten}}        & x      \\\\
+\\textbf{I}       & x       & \\textbf{Feedback}       & x      & \\textbf{I}       & x       & \\textbf{Feedback}      & x      \\\\
+\\textbf{D}       & x       & \\textbf{E-gain}         & x      & \\textbf{D}       & x       & \\textbf{E-gain}        & x      \\\\
+\\end{tabular}
+\\end{table}
+\\medskip 
+\n'''
+    
+    return section8
+
+
+
+runsheet_header = '''\\documentclass[letterpaper,10pt]{article}
+\\usepackage{blindtext}
+\\usepackage{authblk}
+\\usepackage{tabularx} % extra features for tabular environment
+\\usepackage{textcomp}
+\\usepackage{gensymb}
+\\usepackage{amsmath}  % improve math presentation
+\\usepackage{xcolor}
+\\usepackage{rotating}
+\\usepackage[margin=0.75in,letterpaper]{geometry} % decreases margins
+\\usepackage{setspace}
+\\usepackage{multirow}
+\\usepackage{enumitem}
+\\setlength{\\arrayrulewidth}{0.25mm}
+\\renewcommand{\\arraystretch}{1.5}
+%++++++++++++++++++++++++++++++++++++++++
+
+\\begin{document}
+
+\\begin{center}
+\t{\Large \\textbf{Biax Experiment}}
+\\end{center}
+\\bigskip'''
+
+
+
+def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo, notes, tex):
     FileName = Preamble['ExpName'][0:5]
-    runsheet_header = open('runsheet.hdr','r')
 
     outfile = open(FileName+'_Runsheet.tex', 'w')
     pageAry = []
 
     def a_tex_file(title):
-    #     global pageAry
         pageAry.append(runsheet_header)
         pageAry.append(sec1(Preamble))
         pageAry.append(sec2(Block_material))
@@ -229,13 +277,22 @@ def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo,
         pageAry.append(sec4(Vessel))
         pageAry.append(sec5(DCDTs))
         pageAry.append(sec6(ExpInfo))
+        pageAry.append(sec8())
         pageAry.append(sec7(notes))
-#         pageAry.append('\n\n\\end{document}')
+        # pageAry.append('\n\n\\end{document}')
         return
 
     a_tex_file(FileName)
 
     for i in pageAry:
         outfile.writelines(i)
+        
     outfile.close()
     os.system("pdflatex " + FileName+'_Runsheet');
+    
+    # remove .aux and .log files -- comment out if necessary
+    os.remove(FileName+'_Runsheet'+'.aux')
+    os.remove(FileName+'_Runsheet'+'.log')
+    
+    if tex.lower() == 'no':
+        os.remove(FileName+'_Runsheet'+'.tex')

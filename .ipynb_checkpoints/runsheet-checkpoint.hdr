@@ -1,0 +1,23 @@
+\documentclass[letterpaper,10pt]{article}
+\usepackage{blindtext}
+\usepackage{authblk}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{amsmath}  % improve math presentation
+\usepackage{xcolor}
+\usepackage{rotating}
+\usepackage[margin=0.75in,letterpaper]{geometry} % decreases margins
+\usepackage{setspace}
+\usepackage{multirow}
+\usepackage{enumitem}
+\setlength{\arrayrulewidth}{0.25mm}
+\renewcommand{\arraystretch}{1.5}
+%++++++++++++++++++++++++++++++++++++++++
+
+\begin{document}
+
+\begin{center}
+	{\Large \textbf{Biax Experiment}}
+\end{center}	
+\bigskip

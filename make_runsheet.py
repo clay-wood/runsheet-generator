@@ -177,15 +177,17 @@ def sec5(DCDTs):
     
     section5 = '''\\renewcommand{\\arraystretch}{1}
 \\begin{tabular}{ p{11cm} p{10cm} }
+\\small
 	\\textbf{Data Logger Used: }'''+DCDTs['DataLogger']+''' channel &\\textbf{Control File: }'''+DCDTs['CtrlFile']+'''  \\\\
-\end{tabular}
-\medskip 
+\\end{tabular}
+
 
 \\begin{tabular}{ p{11cm} p{10cm} }
+\\small
 	\\textbf{Horiz. DCDT:} \\textit{'''+DCDTs['H_DCDT_rod']+''' rod} & \\textbf{Vert. DCDT: }'''+DCDTs['V_DCDT']+''' \\\\
 	'''+str(round(Hdcdt,4))+''' mm/V &'''+str(round(Vdcdt,4))+ ''' mm/V
 \\end{tabular}
-\\medskip \n'''
+ \\smallskip \n'''
     
     return section5
 
@@ -193,13 +195,47 @@ def sec5(DCDTs):
 def sec6(ExpInfo):
     
     section6 = '''
+\\small
 \\textit{Purpose/Description: }'''+ExpInfo['Purpose']+'''\\\\ \n 
 \\textit{Acoustics Blocks used: }'''+ExpInfo['AcBlocks']+'''\n'''
     
     return section6
 
 
-def sec7(notes):
+def sec7(PID_hyd):
+    
+    section7 = '''\n\n \\renewcommand{\\arraystretch}{1}
+\\begin{table}[h]
+\\scriptsize
+\\centering
+\\begin{tabular}{llll|llll}
+\\multicolumn{4}{c|}{Horiz. Servo Settings} & \\multicolumn{4}{c}{Vert. Servo Settings} \\\\ \\hline
+\\textbf{P} & '''+PID_hyd['H_P']+''' & \\textbf{D\\textsubscript{atten}} & '''+PID_hyd['H_Datten']+''' & \\textbf{P} & '''+PID_hyd['V_P']+''' & \\textbf{D\\textsubscript{atten}} & '''+PID_hyd['V_Datten']+''' \\\\
+\\textbf{I} & '''+PID_hyd['H_I']+''' & \\textbf{Feedback} & '''+PID_hyd['H_Feedbk']+''' & \\textbf{I} & '''+PID_hyd['V_I']+''' & \\textbf{Feedback} & '''+PID_hyd['V_Feedbk']+''' \\\\
+\\textbf{D} & '''+PID_hyd['H_D']+''' & \\textbf{E-gain} & '''+PID_hyd['H_Egain']+''' & \\textbf{D} & '''+PID_hyd['V_D']+''' & \\textbf{E-gain} & '''+PID_hyd['V_Egain']+''' \\\\
+\\end{tabular}
+\\end{table}
+
+\n\n
+
+\\begin{table}[h]
+\\scriptsize
+\\centering
+\\begin{tabular}{ll|ll|ll|ll}
+\\multicolumn{2}{c}{@ Hyd. Power Supply (HPS)} & \\multicolumn{2}{c}{Chilled water at HPS} & \\multicolumn{2}{c}{Chiller Unit} & \\multicolumn{2}{c}{Process water at Chiller} \\\\ \\hline
+14. Tank Temp. (C)  & '''+PID_hyd['HPS_tank_temp']+''' & 1. Temp. In (F)    & '''+PID_hyd['HPSchill_temp_in']+''' & 6. Panel Temp. (F)      & '''+PID_hyd['Chill_panel_temp']+''' & 10. Temp. In (F) & '''+PID_hyd['Process_temp_in']+''' \\\\
+15. Temp. Out (C)   & '''+PID_hyd['HPS_temp_out']+''' & 2. Pres. In (psi)  & '''+PID_hyd['HPSchill_pres_in']+''' & 7. Panel Pres. (psi)    & '''+PID_hyd['Chill_panel_pres']+''' & 11. Pres. In (psi) & '''+PID_hyd['Process_pres_in']+''' \\\\
+16. Pres. Out (psi) & '''+PID_hyd['HPS_pres_out']+''' & 3. Temp. Out (F)   & '''+PID_hyd['HPSchill_temp_out']+''' & 8. Near Pres. In (psi)  & '''+PID_hyd['Chill_pres_in']+''' & 12. Temp. Out (F) & '''+PID_hyd['Process_temp_out']+''' \\\\
+                    &  & 4. Pres. Out (psi) & '''+PID_hyd['HPSchill_pres_out']+''' & 9. Near Pres. Out (psi) & '''+PID_hyd['Chill_pres_out']+''' & 13. Pres. Out (psi) & '''+PID_hyd['Process_pres_out']+''' \\\\
+                    &  & 5. Flow (lpm)      & '''+PID_hyd['HPSchill_flow']+''' &                         &  &                     & 
+\\end{tabular}
+\\end{table}
+'''
+    
+    return section7
+
+
+def sec8(notes):
     
     if notes != None:
         w = [x.split('\n') for x in notes][0]
@@ -207,46 +243,11 @@ def sec7(notes):
         updated_notes = list(map(lambda x: '\t \\item ' + x +'\n ', w4))
         updated_notes = ''.join(updated_notes)
 
-        section7 = '''\\newpage \n \\textbf{Experiment Notes}\n \\medskip\n {\\small \\begin{itemize}[label=\\#]\n \setlength\itemsep{0.25em}\n '''+updated_notes+'''\\end{itemize}} \n\n \\end{document}'''
+        section8 = '''\\newpage \n \\textbf{Experiment Notes}\n \\medskip\n {\\small \\begin{itemize}[label=\\#]\n \setlength\itemsep{0.25em}\n '''+updated_notes+'''\\end{itemize}} \n\n \\end{document}'''
         
     else: 
-        section7 = '''\\newpage \n \\textbf{Experiment Notes} \n\n \\end{document}'''
+        section8 = '''\\newpage \n \\textbf{Experiment Notes} \n\n \\end{document}'''
         
-    return section7
-
-
-
-
-def sec8():
-    
-    section8 = '''\\medskip \n\n \\renewcommand{\\arraystretch}{1}
-\\begin{table}[h!]
-\\footnotesize
-\\centering
-\\begin{tabular}{llll|llll}
-\\multicolumn{4}{c|}{Horiz. Servo Settings} & \\multicolumn{4}{c}{Vert. Servo Settings} \\\\ \\hline
-\\textbf{P}       & x       & \\textbf{D\\textsubscript{atten}}         & x      & \\textbf{P}       & x       & \\textbf{D\\textsubscript{atten}}        & x      \\\\
-\\textbf{I}       & x       & \\textbf{Feedback}       & x      & \\textbf{I}       & x       & \\textbf{Feedback}      & x      \\\\
-\\textbf{D}       & x       & \\textbf{E-gain}         & x      & \\textbf{D}       & x       & \\textbf{E-gain}        & x      \\\\
-\\end{tabular}
-\\end{table}
-
-\n\n
-
-\\begin{table}[h!]
-\\scriptsize
-\\centering
-\\begin{tabular}{ll|ll|ll|ll}
-\\multicolumn{2}{c}{@ Hyd. Power Supply (HPS)} & \\multicolumn{2}{c}{Chilled water at HPS} & \\multicolumn{2}{c}{Chiller Unit} & \\multicolumn{2}{c}{Process water at Chiller} \\\\ \\hline
-14. Tank Temp. (C)  &  & 1. Temp. In (F)    &  & 6. Panel Temp. (F)      &  & 10. Temp. In (F)    &  \\\\
-15. Temp. Out (C)   &  & 2. Pres. In (psi)  &  & 7. Panel Pres. (psi)    &  & 11. Pres. In (psi)  &  \\\\
-16. Pres. Out (psi) &  & 3. Temp. Out (F)   &  & 8. Near Pres. In (psi)  &  & 12. Temp. Out (F)   &  \\\\
-                    &  & 4. Pres. Out (psi) &  & 9. Near Pres. Out (psi) &  & 13. Pres. Out (psi) &  \\\\
-                    &  & 5. Flow (lpm)      &  &                         &  &                     & 
-\\end{tabular}
-\\end{table}
-'''
-    
     return section8
 
 
@@ -277,7 +278,7 @@ runsheet_header = '''\\documentclass[letterpaper,10pt]{article}
 
 
 
-def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo, notes, tex):
+def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo, PID_hyd, notes, tex):
     FileName = Preamble['ExpName'][0:5]
 
     outfile = open(FileName+'_Runsheet.tex', 'w')
@@ -291,8 +292,8 @@ def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo,
         pageAry.append(sec4(Vessel))
         pageAry.append(sec5(DCDTs))
         pageAry.append(sec6(ExpInfo))
-        pageAry.append(sec8())
-        pageAry.append(sec7(notes))
+        pageAry.append(sec7(PID_hyd))
+        pageAry.append(sec8(notes))
         # pageAry.append('\n\n\\end{document}')
         return
 

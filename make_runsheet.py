@@ -306,8 +306,8 @@ def write_runsheet(Preamble, Block_material, Load_Cells, Vessel, DCDTs, ExpInfo,
     os.system("pdflatex " + FileName+'_Runsheet');
     
     # remove .aux and .log files -- comment out if necessary
-    os.remove(FileName+'_Runsheet'+'.aux')
-    os.remove(FileName+'_Runsheet'+'.log')
+    if FileName+'_Runsheet'+'.aux' in os.listdir(): os.remove(FileName+'_Runsheet'+'.aux')
+    if FileName+'_Runsheet'+'.log' in os.listdir(): os.remove(FileName+'_Runsheet'+'.log')
     
     if tex.lower() == 'no':
         os.remove(FileName+'_Runsheet'+'.tex')

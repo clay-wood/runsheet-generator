@@ -102,20 +102,23 @@ def sec3(area, h_lc_picker, h_lc_calib, h_lc_stress, h_lc_ini_V, v_lc_picker, v_
 def sec4(use_vessel, pore_fluid, pc_gain, pc_press, pc_ini_V, pc_load_v, ppa_gain, ppa_press, ppa_ini_V, ppa_load_v, ppb_gain, ppb_press, ppb_ini_V, ppb_load_v):
     if use_vessel.value.lower() != 'no':
             
-        if pc_gain.value != 'None':            
-            section4_Pc = '''\\multicolumn{1}{ |c| } {\\textbf{Pc}} & Gain: '''+str(round(float(pc_gain.value),4))+''' & '''+pc_press.value+''' & '''+pc_ini_V.value+''' & '''+pc_load_v.value+'''\\\\ 
+        if pc_gain.value != 'None':
+            pc_targ_volt = calc_press(pc_gain, pc_press, pc_ini_V)
+            section4_Pc = '''\\multicolumn{1}{ |c| } {\\textbf{Pc}} & Gain: '''+str(round(float(pc_gain.value),4))+''' & '''+pc_press.value+''' & '''+pc_ini_V.value+''' & '''+pc_targ_volt+'''\\\\ 
             \\hline'''
         else:
             section4_Pc = ' '
 
         if ppa_gain.value != 'None':
-            section4_Pa = '''\\multicolumn{1}{ |c| } {\\textbf{PpA}} & '''+str(round(float(ppa_gain.value),4))+''' & '''+ppa_press.value+''' & '''+ppa_ini_V.value+''' & '''+ppa_load_v.value+'''\\\\ 
+            ppa_targ_volt = calc_press(ppa_gain, ppa_press, ppa_ini_V)
+            section4_Pa = '''\\multicolumn{1}{ |c| } {\\textbf{PpA}} & '''+str(round(float(ppa_gain.value),4))+''' & '''+ppa_press.value+''' & '''+ppa_ini_V.value+''' & '''+ppa_targ_volt.value+'''\\\\ 
             \\hline'''
         else: 
             section4_Pa = ' '
 
         if ppb_gain.value != 'None':
-            section4_Pb = '''\\multicolumn{1}{ |c| } {\\textbf{PpB}} & '''+str(round(float(ppb_gain.value),4))+''' & '''+ppb_press.value+''' & '''+ppb_ini_V.value+''' & '''+ppb_load_v.value+'''\\\\ 
+            ppb_targ_volt = calc_press(ppb_gain, ppb_press, ppb_ini_V)
+            section4_Pb = '''\\multicolumn{1}{ |c| } {\\textbf{PpB}} & '''+str(round(float(ppb_gain.value),4))+''' & '''+ppb_press.value+''' & '''+ppb_ini_V.value+''' & '''+ppb_targ_volt+'''\\\\ 
             \\hline'''
         else: 
             section4_Pb = ' '

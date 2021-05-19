@@ -471,7 +471,119 @@ def entry_gui():
              padding='10px',
              width='75%')
     exp_info = widgets.GridBox(children=[purpose, temp_humid, notes], layout=layout)
+
+    vessel_params = widgets.interactive_output(vessel_input, {'a': use_vessel})
     
+    
+    
+    use_pid = widgets.RadioButtons(
+        options=['yes', 'no'],
+        description='Record PID?',
+        value='no',
+        disabled=False)
+    
+    h_servo_label = widgets.Label('Hor. Servo Settings', layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    h_servo_p = widgets.Text(
+        placeholder='',
+        description='P',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    h_servo_i = widgets.Text(
+        placeholder='',
+        description='I',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    h_servo_d = widgets.Text(
+        placeholder='',
+        description='D',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    h_servo_dAt = widgets.Text(
+        placeholder='',
+        description='Datten',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    h_servo_f = widgets.Text(
+        placeholder='',
+        description='Feedback',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    h_servo_e = widgets.Text(
+        placeholder='',
+        description='E-gain',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    v_servo_label = widgets.Label('Vert. Servo Settings', layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    v_servo_p = widgets.Text(
+        placeholder='',
+        description='P',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    v_servo_i = widgets.Text(
+        placeholder='',
+        description='I',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    v_servo_d = widgets.Text(
+        placeholder='',
+        description='D',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    v_servo_dAt = widgets.Text(
+        placeholder='',
+        description='Datten',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    v_servo_f = widgets.Text(
+        placeholder='',
+        description='Feedback',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    v_servo_e = widgets.Text(
+        placeholder='',
+        description='E-gain',
+        continuous_update = True,
+        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    filler_label = widgets.Label('', layout=widgets.Layout(flex='1 1 1%', width='auto'))
+    
+    layout = widgets.Layout(display='flex',
+         flex_flow='row',
+         align_items='stretch',
+         border='2px solid grey',
+         padding='10px',
+         width='75%')
+    
+    col1 = widgets.VBox([h_servo_label, h_servo_p, h_servo_i, h_servo_d])
+    col2 = widgets.VBox([filler_label, h_servo_dAt, h_servo_f, h_servo_e])
+    col12 = widgets.HBox([col1,col2])
+    
+    col3 = widgets.VBox([v_servo_label, v_servo_p, v_servo_i, v_servo_d])
+    col4 = widgets.VBox([filler_label, v_servo_dAt, v_servo_f, v_servo_e])
+    col34 = widgets.HBox([col3, col4])
+#     pid_set = widgets.GridBox(children=[col12, col34], layout=layout)
+    
+    def pid_input(a):
+        pid_set=widgets.Label('')
+        if a == 'yes':
+            pid_set = widgets.GridBox(children=[col12, col34], layout=layout)
+        return display(pid_set)
+    
+    pid_params = widgets.interactive_output(pid_input, {'a': use_pid})
+
     outputs = [exp_name, op_name, hyd_start, hyd_end, pick_date, area, 
                block_thck, layer_thck, layer_thck_ld, material, part_size, 
                h_lc_picker, h_lc_calib, h_lc_stress, h_lc_ini_V, v_lc_picker, 
@@ -481,7 +593,7 @@ def entry_gui():
                data_logger, h_dcdt, h_dcdt_calib, v_dcdt, v_dcdt_calib, 
                layout, purpose, ac_blocks, temp, humid, notes, layout]
 
-    gui = display(preamble, material_block, hor_vert, use_vessel, vessel_params, dcdts, exp_info)
+    gui = display(preamble, material_block, hor_vert, use_vessel, vessel_params, dcdts, exp_info, use_pid, pid_params)
     
     return gui, outputs
 

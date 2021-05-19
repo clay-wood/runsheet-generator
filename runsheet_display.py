@@ -223,9 +223,12 @@ def entry_gui():
             
     v_lc_ini_V.observe(ver_handle_change, names='value')
 
-# ---------------------------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------
+    # VESSEL PRESSURES -- Pc, PpA, PpB
+    # ---------------------------------------------------------------------------------------------------------
 
+#     ves_grid = widgets.GridspecLayout(6, 3)
+    
     pore_fluid = widgets.Text(
         value='DI H2O', 
         placeholder='DI H2O', 
@@ -471,118 +474,59 @@ def entry_gui():
              padding='10px',
              width='75%')
     exp_info = widgets.GridBox(children=[purpose, temp_humid, notes], layout=layout)
+    
+    # ---------------------------------------------------------------------------------------------------------
+    # PID SETTINGS 
+    # ---------------------------------------------------------------------------------------------------------  
+    
+    use_pid = widgets.RadioButtons(options=['yes', 'no'], description='Record PID?',
+        value='no', disabled=False)
+    
+    layout = widgets.Layout(display='inline_flex', align_items='center', align_content='center',
+         border='2px solid grey', padding='10px', width='75%')
+    
+    pid_grid = widgets.GridspecLayout(4, 4, layout=layout)
+    pid_grid_args = {'continuous_update':True, 'disabled':False}
 
-    vessel_params = widgets.interactive_output(vessel_input, {'a': use_vessel})
-    
-    
-    
-    use_pid = widgets.RadioButtons(
-        options=['yes', 'no'],
-        description='Record PID?',
-        value='no',
-        disabled=False)
-    
-    h_servo_label = widgets.Label('Hor. Servo Settings', layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    h_servo_p = widgets.Text(
-        placeholder='',
-        description='P',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    h_servo_i = widgets.Text(
-        placeholder='',
-        description='I',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    h_servo_d = widgets.Text(
-        placeholder='',
-        description='D',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    h_servo_dAt = widgets.Text(
-        placeholder='',
-        description='Datten',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    h_servo_f = widgets.Text(
-        placeholder='',
-        description='Feedback',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    h_servo_e = widgets.Text(
-        placeholder='',
-        description='E-gain',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    v_servo_label = widgets.Label('Vert. Servo Settings', layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    v_servo_p = widgets.Text(
-        placeholder='',
-        description='P',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    v_servo_i = widgets.Text(
-        placeholder='',
-        description='I',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    v_servo_d = widgets.Text(
-        placeholder='',
-        description='D',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    v_servo_dAt = widgets.Text(
-        placeholder='',
-        description='Datten',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    v_servo_f = widgets.Text(
-        placeholder='',
-        description='Feedback',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    v_servo_e = widgets.Text(
-        placeholder='',
-        description='E-gain',
-        continuous_update = True,
-        disabled=False, layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    filler_label = widgets.Label('', layout=widgets.Layout(flex='1 1 1%', width='auto'))
-    
-    layout = widgets.Layout(display='flex',
-         flex_flow='row',
-         align_items='stretch',
-         border='2px solid grey',
-         padding='10px',
-         width='75%')
-    
-    col1 = widgets.VBox([h_servo_label, h_servo_p, h_servo_i, h_servo_d])
-    col2 = widgets.VBox([filler_label, h_servo_dAt, h_servo_f, h_servo_e])
-    col12 = widgets.HBox([col1,col2])
-    
-    col3 = widgets.VBox([v_servo_label, v_servo_p, v_servo_i, v_servo_d])
-    col4 = widgets.VBox([filler_label, v_servo_dAt, v_servo_f, v_servo_e])
-    col34 = widgets.HBox([col3, col4])
-#     pid_set = widgets.GridBox(children=[col12, col34], layout=layout)
-    
+    pid_grid[0,0:2] = widgets.Label('Hor. Servo Settings')
+
+    pid_grid[1,0] = widgets.Text(placeholder='', description='P', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[2,0] = widgets.Text(placeholder='', description='I', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[3,0] = widgets.Text(placeholder='', description='D', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[1,1] = widgets.Text(placeholder='', description='Datten', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[2,1] = widgets.Text(placeholder='', description='Feedback', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[3,1] = widgets.Text(placeholder='', description='E-gain', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[0,2::] = widgets.Label('Vert. Servo Settings')
+
+    pid_grid[1,2] = widgets.Text(placeholder='', description='P', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[2,2] = widgets.Text(placeholder='', description='I', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[3,2] = widgets.Text(placeholder='', description='D', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[1,3] = widgets.Text(placeholder='', description='Datten', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[2,3] = widgets.Text(placeholder='', description='Feedback', layout=widgets.Layout(width='150px'), **pid_grid_args)
+
+    pid_grid[3,3] = widgets.Text(placeholder='', description='E-gain', layout=widgets.Layout(width='150px'), **pid_grid_args)
+       
     def pid_input(a):
         pid_set=widgets.Label('')
         if a == 'yes':
-            pid_set = widgets.GridBox(children=[col12, col34], layout=layout)
+            pid_set = pid_grid
         return display(pid_set)
     
     pid_params = widgets.interactive_output(pid_input, {'a': use_pid})
+    
+    # ---------------------------------------------------------------------------------------------------------
+    # OUTPUT 
+    # ---------------------------------------------------------------------------------------------------------    
 
     outputs = [exp_name, op_name, hyd_start, hyd_end, pick_date, area, 
                block_thck, layer_thck, layer_thck_ld, material, part_size, 

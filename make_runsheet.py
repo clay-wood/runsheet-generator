@@ -285,5 +285,5 @@ def write_runsheet(outputs, tex='no'):
     if FileName+'_Runsheet'+'.aux' in os.listdir(): os.remove(FileName+'_Runsheet'+'.aux')
     if FileName+'_Runsheet'+'.log' in os.listdir(): os.remove(FileName+'_Runsheet'+'.log')
     
-    if tex.lower() == 'no':
-        os.remove(FileName+'_Runsheet'+'.tex')
+    # if tex.lower() == 'no':
+    #     os.remove(FileName+'_Runsheet'+'.tex')

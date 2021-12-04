@@ -1,0 +1,132 @@
+\documentclass[letterpaper, 10pt]{article}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{amsmath}  % improve math presentation
+\usepackage[left=0.75in,top=0.75in,bottom=0.2in,letterpaper]{geometry} % decreases margins
+\usepackage{setspace}
+\usepackage{enumitem}
+
+%----------------------------------------------
+
+\begin{document}
+
+\begin{center}
+	{\Large \textbf{Biax Experiment}}\\
+	{\small For current calibrations -- \texttt{gpfs/group/cjm38/default/Calibrations/}}\\
+	{\footnotesize \textit{Revised: 30 Nov. 2021}}
+\end{center}
+
+\begin{table}[!ht]
+	\renewcommand{\arraystretch}{1.1}
+	\begin{tabular}{p{10cm} p{10cm} }
+	    \textbf{Exp. Name: }p5555 & \textbf{Date/Time: }2021-11-29 \\
+	    \textbf{Operator(s): }clay & Hydraulics start: 1 \\
+	    Temperature ($\degree$C): & Hydraulics end: 2 \\
+	    Relative Humidity ($\%$): & Data Logger/Control File: \\
+	\end{tabular}
+\end{table} \vspace{-0.5cm}
+
+\begin{table}[!ht]
+	\renewcommand{\arraystretch}{1.1}
+	\begin{tabular}{p{20cm}}
+	    \textbf{Purpose/Description:} \\
+	    Sample Block Used and Thickness with \textbf{no} Sample: \\
+	\end{tabular}
+\end{table} \vspace{-0.5cm}
+
+
+\begin{table}[!ht]
+	\small
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabular}{ |p{7cm}| } \hline
+	    Material: \\ 
+	    Particle Size, Distribution: \\ 
+	    Benchtop Sample Thickness (mm): \\ 
+	    Pre-Compaction Sample Thickness (mm): \\ 
+	    Post-Compaction Sample Thickness (mm): \\ \hline
+	\end{tabular}
+	\hfill
+	\begin{tabular}{ |l|c|c| } \hline
+	     & Block 1 & Block 2\\ \hline
+	    Empty Block Weight (g) &  & \\ \hline
+	    Weight of Material Used (g) &  & \\ \hline
+	    Sample Block Weight (g) &  & \\ \hline
+	    Weight of Gouge (g) &  & \\ \hline
+	\end{tabular}
+\end{table} \vspace{-0.5cm}
+
+
+\begin{table}[ht!]
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{ |p{2.75cm}|p{4cm}|p{3.5cm}|p{2.5cm}| p{3cm}| }
+	    \multicolumn{3}{l}{\textbf{\textit{Load Cells:}}} & \multicolumn{2}{l}{Contact Area: 0.001 $ m^2 $}\\ \hline
+	    \textbf{Load cell name} & \textbf{Calibrations (mV/kN)} & \textbf{Target stress (MPa)} & \textbf{Init. Voltage} & \textbf{Volt. @ load}\\
+	    \hline
+	    44mm Solid Horiz & \begin{tabular}[c]{@{}l@{}}100.123\\ (V/MPa): 0.1001\end{tabular} & 10 & 0 & 1.00123\\ 
+	    \hline44mm Solid Vert & \begin{tabular}[c]{@{}l@{}}100.123\\ (V/MPa): 0.1001\end{tabular} & 10 & 1 & 2.00123\\ 
+	    \hline
+	\end{tabular}
+\end{table} \vspace{-0.5cm}
+
+\begin{table}[ht!]
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{ |p{4cm}|p{5cm}|p{2.5cm}| p{4.75cm}| }
+	    \multicolumn{4}{l}{\textbf{\textit{Vessel Pressures:}}} \\ \hline
+	    \textbf{Calibrations (V/MPa)} & \textbf{Pressures (MPa)} & \textbf{Init. Voltage} & \textbf{Volt. @ load}\\ \hline
+	    44mm Solid Horiz & \textit{\small PpA:} test & 0 & 1.00123\\ \hline
+	    44mm Solid Vert & \textit{\small PpB:} test & 1 & 2.00123\\ \hline
+	    0.1456 & \textit{\small Pc:}  test & 1 & 2.00123\\ \hline
+	\end{tabular}
+\end{table} \vspace{-0.5cm}
+
+\begin{table}[ht!]
+	\small
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabular}{ l l } 
+	    \multicolumn{2}{c}{\textbf{\textit{Displacement Transducers}}} \\
+	    \textbf{\textit{Name}} & \textbf{\textit{Gain (mm/V)}} \\ \hline
+	    Horiz. Load-point: &   \\ \hline
+	    Vert. Load-point &  \\ \hline
+	    Horiz. On-Board: &  \\ \hline
+	    Vert. On-Board:  &  \\ \hline
+	\end{tabular}
+\end{table} \vspace{-0.5cm}
+
+\begin{table}[!ht]
+	\footnotesize
+	\renewcommand{\arraystretch}{1.1}
+	\begin{tabular}{ p{1cm}|p{2cm} } \rowcolor[HTML]{EFEFEF}
+	    \multicolumn{2}{c}{\textit{Horizontal Servo Settings} \cellcolor[HTML]{EFEFEF}} \\ \hline
+	    P: & D$_{atten}$  \\ \hline
+	    I: & Feedback: \\ \hline
+	    D: & E-gain: \\ \hline
+	    \multicolumn{2}{c}{\textit{Vertical Servo Settings} \cellcolor[HTML]{EFEFEF}} \\ \hline
+	    P: & D$_{atten}$  \\ \hline
+	    I: & Feedback: \\ \hline
+	    D: & E-gain: \\ \hline
+	\end{tabular}
+	\hfill
+	\renewcommand{\arraystretch}{1.1}
+	\begin{tabular}{ l|l|l } \rowcolor[HTML]{EFEFEF}
+	    \textit{Chilled water at HPS} & \textit{Chiller Unit} & \textit{Proc. water @ Chiller}\\ \hline
+	    1. Temp In ($\degree$F): & 6. Panel Temp ($\degree$F):  & 10. Temp In ($\degree$F): \\ \hline
+	    2. Pres. In (psi): & 7. Panel Pres. (psi): & 11. Pres. In (psi): \\ \hline
+	    3. Temp Out ($\degree$F): & 8. Near Pres. In (psi): & 12. Temp Out ($\degree$F): \\ \hline
+	    4. Pres. Out (psi): & 9. Near Pres. Out (psi): & 13. Pres. Out (psi): \\ \hline
+	    5. Flow (lpm): \\ \hline
+	    \multicolumn{3}{c}{\textit{Hyd. Power Supply (HPS)} \cellcolor[HTML]{EFEFEF}} \\ \hline
+	    14. Tank Temp ($\degree$C): & 15. Temp. Out ($\degree$C): & 16. Pres. Out (psi): \\ \hline
+	\end{tabular}
+\end{table} \vspace{-0.5cm}
+
+
+\newpage 
+ \textbf{Experiment Notes}
+ \medskip
+ {\small \begin{itemize}[label=\#]
+ \setlength\itemsep{0.25em}
+ 	 \item 
+ \end{itemize}} 
+
+ \end{document}

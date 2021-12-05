@@ -11,7 +11,7 @@ setup(name='runsheetGen',
     # url='http://pypi.python.org/pypi/runsheetGen/',
     package_data={'runsheetGen': ['templates/runsheetTemplate.tex']},
     install_requires=[
-        "pandas==1.3.3",
-        "numpy==1.20.0",
+        "pandas >= 1.1.1",
+        "numpy >= 1.10.0",
     ],
 )

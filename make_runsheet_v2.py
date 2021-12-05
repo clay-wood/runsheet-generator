@@ -155,7 +155,7 @@ def sec4(use_vessel, pore_fluid, pc_gain, pc_press, pc_ini_V, ppa_gain, ppa_pres
         else: 
             section4_Pb = ' '
 
-        section4 = table_hdr+section4_Pc+section4_Pa+section4_Pb+'''\\end{tabular}
+        section4 = table_hdr+section4_Pc+section4_Pa+section4_Pb+''' \\end{tabular}
         \\end{table} \\vspace{-0.5cm} \n\n'''
 
     else:
@@ -166,90 +166,92 @@ def sec4(use_vessel, pore_fluid, pc_gain, pc_press, pc_ini_V, ppa_gain, ppa_pres
 # ---------------------------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------------------------
 
-def sec5(data_logger, h_dcdt, h_dcdt_calib, v_dcdt, v_dcdt_calib):
-    section5 = '''\\renewcommand{\\arraystretch}{1}
-\\begin{tabular}{ p{11cm} p{10cm} }
-\\small
-    \\textbf{Data Logger Used: }'''+data_logger.value+''' channel &\\textbf{Control File: }+ CTRL File  \\\\
-\\end{tabular}
+def sec5(dcdt1, dcdt1_calib, dcdt2, dcdt2_calib, dcdt3, dcdt3_calib, dcdt4, dcdt4_calib):
+    table_hdr = '''\\begin{table}[ht!]
+    \\small
+    \\renewcommand{\\arraystretch}{1.2}
+    \\begin{tabular}{ l l } 
+        \\multicolumn{2}{c}{\\textbf{\\textit{Displacement Transducers}}} \\\\
+        \\textbf{\\textit{Name}} & \\textbf{\\textit{Gain (mm/V)}} \\\\ \\hline '''
 
+    table_body = ''
+    if dcdt1_calib != '':
+        table_body += dcdt1+''' &  '''+dcdt1_calib+''' \\\\ \\hline '''
+    if dcdt2_calib != '':
+        table_body += dcdt2+''' &  '''+dcdt2_calib+''' \\\\ \\hline '''
+    if dcdt3_calib != '':
+        table_body += dcdt3+''' &  '''+dcdt3_calib+''' \\\\ \\hline '''
+    if dcdt4_calib != '':
+        table_body += dcdt4+''' &  '''+dcdt4_calib+''' \\\\ \\hline '''
 
-\\begin{tabular}{ p{11cm} p{10cm} }
-\\small
-    \\textbf{Horiz. DCDT:} \\textit{'''+h_dcdt.value+'''} & \\textbf{Vert. DCDT: }'''+v_dcdt.value+''' \\\\
-    '''+str(round(float(h_dcdt_calib.value),4))+''' mm/V &'''+str(round(float(v_dcdt_calib.value),4))+ ''' mm/V
-\\end{tabular}
- \\smallskip \n'''
+    section5 = table_hdr + table_body + ''' \\end{tabular}
+    \\end{table} \\vspace{-0.5cm} \n\n'''
     
     return section5
 
-def sec6(purpose, ac_blocks, temp, humid):
-    section6 = '''
-\\small
-\\textit{Purpose/Description: }'''+purpose.value+'''\\\\ \n 
-\\textit{Acoustics Blocks used: }'''+ac_blocks.value+'''\n
-\\textbf{Temperature: }'''+temp.value+'''\t'''+humid.value+'''\n'''
-    
+# ---------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------
+
+def sec6(servo, hps):
+    table_hdr = '''\\begin{table}[!ht]
+        \\footnotesize
+        \\renewcommand{\\arraystretch}{1.1}
+        \\begin{tabular}{ p{1cm}|p{2cm} } \\rowcolor[HTML]{EFEFEF}
+            \\multicolumn{2}{c}{\\textit{Horizontal Servo Settings} \\cellcolor[HTML]{EFEFEF}} \\\\ \\hline '''
+
+    part1_body = '''P: '''+servo[0]+''' & D$_{atten}$: '''+servo[1]+''' \\\\ \\hline
+        I: '''+servo[2]+''' & Feedback: '''+servo[3]+''' \\\\ \\hline 
+        D: '''+servo[4]+''' & E-gain: '''+servo[5]+''' \\\\ \\hline 
+        \\multicolumn{2}{c}{\\textit{Vertical Servo Settings} \\cellcolor[HTML]{EFEFEF}} \\\\ \\hline 
+        P: '''+servo[6]+''' & D$_{atten}$  '''+servo[7]+''' \\\\ \\hline 
+        I: '''+servo[8]+''' & Feedback: '''+servo[9]+''' \\\\ \\hline
+        D: '''+servo[10]+''' & E-gain: '''+servo[11]+''' \\\\ \\hline 
+    \\end{tabular} '''
+    part1 = table_hdr + part1_body
+
+    table2_hdr = '''\\hfill 
+        \\renewcommand{\\arraystretch}{1.1}
+        \\begin{tabular}{ l|l|l } \\rowcolor[HTML]{EFEFEF}
+        \\textit{Chilled water at HPS} & \\textit{Chiller Unit} & \\textit{Proc. water @ Chiller} \\\\ \\hline '''
+
+    part2_body = '''1. Temp In ($\\degree$F): '''+hps[0]+''' & 6. Panel Temp ($\\degree$F): '''+hps[5]+''' & 10. Temp In ($\\degree$F): '''+hps[9]+''' \\\\ \\hline 
+    2. Pres. In (psi): '''+hps[1]+''' & 7. Panel Pres. (psi): '''+hps[6]+''' & 11. Pres. In (psi): '''+hps[10]+''' \\\\ \\hline 
+    3. Temp Out ($\\degree$F): '''+hps[2]+''' & 8. Near Pres. In (psi): '''+hps[7]+'''& 12. Temp Out ($\\degree$F): '''+hps[11]+''' \\\\ \\hline 
+    4. Pres. Out (psi): '''+hps[3]+'''& 9. Near Pres. Out (psi): '''+hps[8]+'''& 13. Pres. Out (psi): '''+hps[12]+''' \\\\ \\hline 
+    5. Flow (lpm): '''+hps[4]+''' \\\\ \\hline 
+    \\multicolumn{3}{c}{\\textit{Hyd. Power Supply (HPS)} \\cellcolor[HTML]{EFEFEF}} \\\\ \\hline 
+    14. Tank Temp ($\\degree$C): '''+hps[13]+''' & 15. Temp. Out ($\\degree$C): '''+hps[4]+''' & 16. Pres. Out (psi): '''+hps[15]+''' \\\\ \\hline 
+    \\end{tabular} 
+    \\end{table} \\vspace{-0.5cm} \n\n'''
+    part2 = table2_hdr + part2_body
+
+    section6 = part1 + part2
+
     return section6
 
 # ---------------------------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------------------------
 
-def sec7(PID_hyd):
+def sec7(notes):
     
-    section7 = '''\n\n \\renewcommand{\\arraystretch}{1}
-\\begin{table}[h]
-\\scriptsize
-\\centering
-\\begin{tabular}{llll|llll}
-\\multicolumn{4}{c|}{Horiz. Servo Settings} & \\multicolumn{4}{c}{Vert. Servo Settings} \\\\ \\hline
-\\textbf{P} & '''+PID_hyd['H_P']+''' & \\textbf{D\\textsubscript{atten}} & '''+PID_hyd['H_Datten']+''' & \\textbf{P} & '''+PID_hyd['V_P']+''' & \\textbf{D\\textsubscript{atten}} & '''+PID_hyd['V_Datten']+''' \\\\
-\\textbf{I} & '''+PID_hyd['H_I']+''' & \\textbf{Feedback} & '''+PID_hyd['H_Feedbk']+''' & \\textbf{I} & '''+PID_hyd['V_I']+''' & \\textbf{Feedback} & '''+PID_hyd['V_Feedbk']+''' \\\\
-\\textbf{D} & '''+PID_hyd['H_D']+''' & \\textbf{E-gain} & '''+PID_hyd['H_Egain']+''' & \\textbf{D} & '''+PID_hyd['V_D']+''' & \\textbf{E-gain} & '''+PID_hyd['V_Egain']+''' \\\\
-\\end{tabular}
-\\end{table}
-
-\n\n
-
-\\begin{table}[h]
-\\scriptsize
-\\centering
-\\begin{tabular}{ll|ll|ll|ll}
-\\multicolumn{2}{c}{@ Hyd. Power Supply (HPS)} & \\multicolumn{2}{c}{Chilled water at HPS} & \\multicolumn{2}{c}{Chiller Unit} & \\multicolumn{2}{c}{Process water at Chiller} \\\\ \\hline
-14. Tank Temp. (C)  & '''+PID_hyd['HPS_tank_temp']+''' & 1. Temp. In (F)    & '''+PID_hyd['HPSchill_temp_in']+''' & 6. Panel Temp. (F)      & '''+PID_hyd['Chill_panel_temp']+''' & 10. Temp. In (F) & '''+PID_hyd['Process_temp_in']+''' \\\\
-15. Temp. Out (C)   & '''+PID_hyd['HPS_temp_out']+''' & 2. Pres. In (psi)  & '''+PID_hyd['HPSchill_pres_in']+''' & 7. Panel Pres. (psi)    & '''+PID_hyd['Chill_panel_pres']+''' & 11. Pres. In (psi) & '''+PID_hyd['Process_pres_in']+''' \\\\
-16. Pres. Out (psi) & '''+PID_hyd['HPS_pres_out']+''' & 3. Temp. Out (F)   & '''+PID_hyd['HPSchill_temp_out']+''' & 8. Near Pres. In (psi)  & '''+PID_hyd['Chill_pres_in']+''' & 12. Temp. Out (F) & '''+PID_hyd['Process_temp_out']+''' \\\\
-                    &  & 4. Pres. Out (psi) & '''+PID_hyd['HPSchill_pres_out']+''' & 9. Near Pres. Out (psi) & '''+PID_hyd['Chill_pres_out']+''' & 13. Pres. Out (psi) & '''+PID_hyd['Process_pres_out']+''' \\\\
-                    &  & 5. Flow (lpm)      & '''+PID_hyd['HPSchill_flow']+''' &                         &  &                     & 
-\\end{tabular}
-\\end{table}
-'''
-    
-    return section7
-
-# ---------------------------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------------------------
-
-def sec8(notes):
-    
-    if notes.value != None:
-        w4 = notes.value.split('\n\n')
+    if notes != '':
+        w4 = notes.split('\n\n')
         updated_notes = list(map(lambda x: '\t \\item ' + x +'\n ', w4))
         updated_notes = ''.join(updated_notes)
 
-        section8 = '''\\newpage \n \\textbf{Experiment Notes}\n \\medskip\n {\\small \\begin{itemize}[label=\\#]\n \setlength\itemsep{0.25em}\n '''+updated_notes+'''\\end{itemize}} \n\n \\end{document}'''
+        section7 = '''\\newpage \n \\textbf{Experiment Notes}\n \\medskip\n {\\small \\begin{itemize}[label=\\#]\n \setlength\itemsep{0.25em}\n '''+updated_notes+'''\\end{itemize}} \n\n \\end{document}'''
         
     else: 
-        section8 = '''\\newpage \n \\textbf{Experiment Notes} \n\n \\end{document}'''
+        section7 = '''\\newpage \n \\textbf{Experiment Notes} \n\n'''
         
-    return section8
+    return section7
 
 runsheet_header = '''\\documentclass[letterpaper, 10pt]{article}
 \\usepackage[table,xcdraw]{xcolor}
 \\usepackage{textcomp}
 \\usepackage{gensymb}
 \\usepackage{amsmath}  % improve math presentation
-\\usepackage[left=0.75in,top=0.75in,bottom=0.2in,letterpaper]{geometry} % decreases margins
+\\usepackage[left=0.75in,top=0.75in,bottom=0.2in,letterpaper]{geometry}
 \\usepackage{setspace}
 \\usepackage{enumitem}\n
 
@@ -271,7 +273,9 @@ def write_runsheet(outputs, tex='no'):
     [exp_name, pick_date, op_name, hyd_start, hyd_end, temp, humid, data_logger, ctrl, 
     purpose, sample_blk, ac_blk, material, part_size, bench_thk, preCom_thk, postCom_thk, empty1, empty2, matWeight1, matWeight2, sampleBlk_weight1, sampleBlk_weight2, gougeWeight1, gougeWeight2,
     area, h_lc_picker, h_lc_calib, h_lc_stress, h_lc_ini_V, v_lc_picker, v_lc_calib, v_lc_stress, v_lc_ini_V, 
-    use_vessel, pore_fluid, pc_gain, pc_press, pc_ini_V, ppa_gain, ppa_press, ppa_ini_V, ppb_gain, ppb_press, ppb_ini_V] = list(map(lambda xx: outputs[xx], np.arange(len(outputs))))
+    use_vessel, pore_fluid, pc_gain, pc_press, pc_ini_V, ppa_gain, ppa_press, ppa_ini_V, ppb_gain, ppb_press, ppb_ini_V, 
+    dcdt1, dcdt1_calib, dcdt2, dcdt2_calib, dcdt3, dcdt3_calib, dcdt4, dcdt4_calib, 
+    servo, hps, notes] = list(map(lambda xx: outputs[xx], np.arange(len(outputs))))
     
     FileName = exp_name
 
@@ -284,10 +288,9 @@ def write_runsheet(outputs, tex='no'):
         pageAry.append(sec2(purpose, sample_blk, ac_blk, material, part_size, bench_thk, preCom_thk, postCom_thk, empty1, empty2, matWeight1, matWeight2, sampleBlk_weight1, sampleBlk_weight2, gougeWeight1, gougeWeight2))
         pageAry.append(sec3(area, h_lc_picker, h_lc_calib, h_lc_stress, h_lc_ini_V, v_lc_picker, v_lc_calib, v_lc_stress, v_lc_ini_V))
         pageAry.append(sec4(use_vessel, pore_fluid, pc_gain, pc_press, pc_ini_V, ppa_gain, ppa_press, ppa_ini_V, ppb_gain, ppb_press, ppb_ini_V))
-        # pageAry.append(sec5(data_logger, h_dcdt, h_dcdt_calib, v_dcdt, v_dcdt_calib))
-        # pageAry.append(sec6(purpose, ac_blocks, temp, humid))
-#         pageAry.append(sec7(PID_hyd))
-        # pageAry.append(sec8(notes))
+        pageAry.append(sec5(dcdt1, dcdt1_calib, dcdt2, dcdt2_calib, dcdt3, dcdt3_calib, dcdt4, dcdt4_calib))
+        pageAry.append(sec6(servo, hps))
+        pageAry.append(sec7(notes))
         pageAry.append('\n\n\\end{document}')
         return
 

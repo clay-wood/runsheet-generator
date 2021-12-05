@@ -6,7 +6,11 @@ Authors: Clay Wood, Raphael Affinito.
 import tkinter as tk
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
+
+import os
 import datetime
+from make_runsheet_v2 import write_runsheet
+import webbrowser
 
 
 def main():
@@ -68,7 +72,6 @@ def main():
     Name_label = ttk.Label(page1, text="Operator(s):", font='Arial 14 bold')
     Name_label.grid(row=3,column=0, **padding)
     Name_entry = ttk.Entry(page1)
-    Name_entry.insert(0, " ")
     Name_entry.grid(row=3,column=1, columnspan=2, **padding)
 
     hydStart_label = ttk.Label(page1, text="Hydraulics start:", font='Arial 12 bold')
@@ -92,7 +95,7 @@ def main():
     humid_entry.grid(row=4,column=3)
 
     logger_optMenu = tk.StringVar(page1)
-    logger_opts = ["", "8-chan", "16-chan"]
+    logger_opts = [" ", "8-chan", "16-chan"]
     logger_label = ttk.Label(page1, text="Data Logger", font='Arial 12 bold')
     logger_label.grid(row=4, column=4, sticky=tk.W)
     logger = ttk.OptionMenu(page1, logger_optMenu, *logger_opts)
@@ -190,127 +193,136 @@ def main():
     # LOAD CELLS
     # ------------------------------------------------------------------
 
+    area_label = ttk.Label(page2, text="Contact Area:", font='Arial 14 bold')
+    area_label.grid(row=2, column=0, **padding)
+    area_entry = ttk.Entry(page2, width=16)
+    area_entry.grid(row=2, column=1, columnspan=1, **padding)
+    
     LC_label = ttk.Label(page2, text="Load Cell Name", font='Arial 14 bold')
-    LC_label.grid(row=2, column=0, **padding)
+    LC_label.grid(row=3, column=0, **padding)
 
     Calib_label = ttk.Label(page2, text="Calibrations (mv/kN)", font='Arial 14 bold')
-    Calib_label.grid(row=2, column=1, **padding)
+    Calib_label.grid(row=3, column=1, **padding)
 
     TarStr_label = ttk.Label(page2, text="Target stress (MPa)", font='Arial 14 bold')
-    TarStr_label.grid(row=2, column=2, **padding)
+    TarStr_label.grid(row=3, column=2, **padding)
 
     IniV_label = ttk.Label(page2, text="Init. Voltage", font='Arial 14 bold')
-    IniV_label.grid(row=2, column=3, **padding)
+    IniV_label.grid(row=3, column=3, **padding)
 
     LoadV_label = ttk.Label(page2, text="Volt @ load", font='Arial 14 bold')
-    LoadV_label.grid(row=2, column=4, **padding)
+    LoadV_label.grid(row=3, column=4, **padding)
 
     horOpts = ["", "None","44mm Solid Horiz","44mm Solid Vert"]
     vertOpts = ["","None","44mm Solid Vert","44mm Solid Horiz"]
 
     HorLC_optMenu = tk.StringVar(page2)
     HorLC = ttk.OptionMenu(page2, HorLC_optMenu, *horOpts)
-    HorLC.grid(row=3, column=0, **padding)
+    HorLC.grid(row=4, column=0, **padding)
 
     HorCal_entry = ttk.Entry(page2, width=16)
-    HorCal_entry.insert(0, " ")
-    HorCal_entry.grid(row=3, column=1, columnspan=1, **padding)
+    HorCal_entry.grid(row=4, column=1, columnspan=1, **padding)
 
     HorStress_entry = ttk.Entry(page2, width=16)
-    HorStress_entry.insert(0, " ")
-    HorStress_entry.grid(row=3, column=2, columnspan=1, **padding)
+    HorStress_entry.grid(row=4, column=2, columnspan=1, **padding)
 
     HorIniV_entry = ttk.Entry(page2, width=16)
-    HorIniV_entry.insert(0, " ")
-    HorIniV_entry.grid(row=3, column=3, columnspan=1, **padding)
+    HorIniV_entry.grid(row=4, column=3, columnspan=1, **padding)
 
     HorVolt_entry = ttk.Entry(page2, width=16)
-    HorVolt_entry.insert(0, " ")
-    HorVolt_entry.grid(row=3, column=4, columnspan=1, **padding)
+    HorVolt_entry.grid(row=4, column=4, columnspan=1, **padding)
 
     VertLC_optMenu = tk.StringVar(page2)
     VertLC = ttk.OptionMenu(page2, VertLC_optMenu, *horOpts)
-    VertLC.grid(row=3, column=0, **padding)
+    VertLC.grid(row=5, column=0, **padding)
 
     VertCal_entry = ttk.Entry(page2, width=16)
-    VertCal_entry.insert(0, " ")
-    VertCal_entry.grid(row=3, column=1, columnspan=1, **padding)
+    VertCal_entry.grid(row=5, column=1, columnspan=1, **padding)
 
     VertStress_entry = ttk.Entry(page2, width=16)
-    VertStress_entry.insert(0, " ")
-    VertStress_entry.grid(row=3, column=2, columnspan=1, **padding)
+    VertStress_entry.grid(row=5, column=2, columnspan=1, **padding)
 
     VertIniV_entry = ttk.Entry(page2, width=16)
-    VertIniV_entry.insert(0, " ")
-    VertIniV_entry.grid(row=3, column=3, columnspan=1, **padding)
+    VertIniV_entry.grid(row=5, column=3, columnspan=1, **padding)
 
     VertVolt_entry = ttk.Entry(page2, width=16)
-    VertVolt_entry.insert(0, " ")
-    VertVolt_entry.grid(row=3, column=4, columnspan=1, **padding)
+    VertVolt_entry.grid(row=5, column=4, columnspan=1, **padding)
 
     # ------------------------------------------------------------------
     # VESSEL PRESSURES
     # ------------------------------------------------------------------
 
+    useVessel_label = ttk.Label(page2, text="Use Vessel?", font='Arial 14 bold')
+    useVessel_label.grid(row=6, column=0, **padding)
+    vesselOpts = ["", "Yes","No"]
+    vessel_optMenu = tk.StringVar(page2)
+    vesselYN = ttk.OptionMenu(page2, vessel_optMenu, *vesselOpts)
+    vesselYN.grid(row=6, column=1, **padding)
+
+    fluid_label = ttk.Label(page2, text="Pore Fluid", font='Arial 14 bold')
+    fluid_label.grid(row=6, column=2, **padding)
+    fluid_entry = ttk.Entry(page2)
+    fluid_entry.grid(row=6, column=3, columnspan=1, **padding)
+    
     vessel_label = ttk.Label(page2, text="Vessel Pressures", font='Arial 14 bold')
-    vessel_label.grid(row=4, column=0, **padding)
+    vessel_label.grid(row=7, column=0, **padding)
 
     vesCalib_label = ttk.Label(page2, text="Calibrations (V/MPa)", font='Arial 14 bold')
-    vesCalib_label.grid(row=4, column=1, **padding)
+    vesCalib_label.grid(row=7, column=1, **padding)
 
     TarPres_label = ttk.Label(page2, text="Pressures (MPa)", font='Arial 14 bold')
-    TarPres_label.grid(row=4, column=2, **padding)
+    TarPres_label.grid(row=7, column=2, **padding)
 
     IniVpres_label = ttk.Label(page2, text="Init. Voltage", font='Arial 14 bold')
-    IniVpres_label.grid(row=4, column=3, **padding)
+    IniVpres_label.grid(row=7, column=3, **padding)
 
     PressV_label = ttk.Label(page2, text="Volt @ load", font='Arial 14 bold')
-    PressV_label.grid(row=4, column=4, **padding)
+    PressV_label.grid(row=7, column=4, **padding)
 
     pc_label = ttk.Label(page2, text="Confining", font='Arial 14 bold')
-    pc_label.grid(row=5, column=0, **padding)
+    pc_label.grid(row=8, column=0, **padding)
 
     pc_calib = ttk.Entry(page2, width=16)
-    pc_calib.grid(row=5, column=1, columnspan=1, **padding)
+    pc_calib.grid(row=8, column=1, columnspan=1, **padding)
 
     pcPress = ttk.Entry(page2, width=16)
-    pcPress.grid(row=5, column=2, columnspan=1, **padding)
+    pcPress.grid(row=8, column=2, columnspan=1, **padding)
 
     pcIniV = ttk.Entry(page2, width=16)
-    pcIniV.grid(row=5, column=3, columnspan=1, **padding)
+    pcIniV.grid(row=8, column=3, columnspan=1, **padding)
 
     pcVolt = ttk.Entry(page2, width=16)
-    pcVolt.grid(row=5, column=4, columnspan=1, **padding)
+    pcVolt.grid(row=8, column=4, columnspan=1, **padding)
 
     ppa_label = ttk.Label(page2, text="PpA", font='Arial 14 bold')
-    ppa_label.grid(row=6, column=0, **padding)
+    ppa_label.grid(row=9, column=0, **padding)
 
     ppa_calib = ttk.Entry(page2, width=16)
-    ppa_calib.grid(row=6, column=1, columnspan=1, **padding)
+    ppa_calib.grid(row=9, column=1, columnspan=1, **padding)
 
     ppaPress = ttk.Entry(page2, width=16)
-    ppaPress.grid(row=6, column=2, columnspan=1, **padding)
+    ppaPress.grid(row=9, column=2, columnspan=1, **padding)
 
     ppaIniV = ttk.Entry(page2, width=16)
-    ppaIniV.grid(row=6, column=3, columnspan=1, **padding)
+    ppaIniV.grid(row=9, column=3, columnspan=1, **padding)
 
     ppaVolt = ttk.Entry(page2, width=16)
-    ppaVolt.grid(row=6, column=4, columnspan=1, **padding)
+    ppaVolt.grid(row=9, column=4, columnspan=1, **padding)
 
     ppb_label = ttk.Label(page2, text="PpB", font='Arial 14 bold')
-    ppb_label.grid(row=7, column=0, **padding)
+    ppb_label.grid(row=10, column=0, **padding)
 
     ppb_calib = ttk.Entry(page2, width=16)
-    ppb_calib.grid(row=7, column=1, columnspan=1, **padding)
+    ppb_calib.grid(row=10, column=1, columnspan=1, **padding)
 
     ppbPress = ttk.Entry(page2, width=16)
-    ppbPress.grid(row=7, column=2, columnspan=1, **padding)
+    ppbPress.grid(row=10, column=2, columnspan=1, **padding)
 
     ppbIniV = ttk.Entry(page2, width=16)
-    ppbIniV.grid(row=7, column=3, columnspan=1, **padding)
+    ppbIniV.grid(row=10, column=3, columnspan=1, **padding)
 
     ppbVolt = ttk.Entry(page2, width=16)
-    ppbVolt.grid(row=7, column=4, columnspan=1, **padding)
+    ppbVolt.grid(row=10, column=4, columnspan=1, **padding)
 
     # # ------------------------------------------------------------------
     # # DCDTS
@@ -322,12 +334,30 @@ def main():
     # lstbox = tk.Listbox(page2, listvariable=valores, selectmode=tk.MULTIPLE, width=20, height=10)
     # lstbox.grid(row=19, column=0, columnspan=1)
 
-    def get_value():
-        print(expName_entry.get()+'\n'+Name_entry.get()+'\n'+
-        date_entry.get()+'\n'+logger_optMenu.get()+'\n'+ctrl_entry.get()+'\n'+
-        purpose.get("1.0",'end-1c')+'\n'+sideblk_optMenu.get()+'\n'+ACblk_entry.get()+
-        '\n'+material_entry.get()+'\n'+HorLC_optMenu.get()+'\n'+HorCal_entry.get()+
-        '\n'+HorStress_entry.get()+'\n'+HorIniV_entry.get()+'\n'+HorVolt_entry.get())
+    # def get_value():
+    #     print(expName_entry.get()+'\n'+Name_entry.get()+'\n'+
+    #     date_entry.get()+'\n'+logger_optMenu.get()+'\n'+ctrl_entry.get()+'\n'+
+    #     purpose.get("1.0",'end-1c')+'\n'+sideblk_optMenu.get()+'\n'+ACblk_entry.get()+
+    #     '\n'+material_entry.get()+'\n'+HorLC_optMenu.get()+'\n'+HorCal_entry.get()+
+    #     '\n'+HorStress_entry.get()+'\n'+HorIniV_entry.get()+'\n'+HorVolt_entry.get())
+
+    def printRunsheet():
+        outputs = [expName_entry.get(), Name_entry.get(), date_entry.get(), hydStart_entry.get(), hydEnd_entry.get(), 
+        temp_entry.get(), humid_entry.get(), logger_optMenu.get(), ctrl_entry.get(),
+        purpose.get("1.0",'end-1c'), sideblk_optMenu.get(), ACblk_entry.get(), material_entry.get(), particle_entry.get(), bench_entry.get(), preComp_entry.get(), postComp_entry.get(), 
+        emptyBlk1_entry.get(), emptyBlk2_entry.get(), weightBlk1_entry.get(), weightBlk2_entry.get(), Blk1weight_entry.get(), Blk2weight_entry.get(), gougeWeight1_entry.get(), gougeWeight2_entry.get(),  
+        area_entry.get(), HorLC_optMenu.get(), HorCal_entry.get(), HorStress_entry.get(), HorIniV_entry.get(), 
+        VertLC_optMenu.get(), VertCal_entry.get(), VertStress_entry.get(), VertIniV_entry.get(),
+        vessel_optMenu.get(), fluid_entry.get(), pc_calib.get(), pcPress.get(), pcIniV.get(), 
+        ppa_calib.get(), ppaPress.get(), ppaIniV.get(), ppb_calib.get(), ppbPress.get(), ppbIniV.get()]
+
+        write_runsheet(outputs)
+        webbrowser.open_new(r'file:'+os.getcwd()+'/'+outputs[0]+'_Runsheet.pdf')
+        return 
+
+
+
+
 
 
     notes_label = ttk.Label(page3, text="Experiment Notes", font='Arial 15 bold')
@@ -345,7 +375,8 @@ def main():
     # #     g_text=purpose.get("1.0",'end-1c')
     # #     print(e_text+'\n'+f_text+'\n'+g_text)
 
-    print_button = ttk.Button(page3, text="Print Results", command=get_value)
+    # print_button = ttk.Button(page3, text="Print Runsheet", command=get_value)
+    print_button = ttk.Button(page3, text="Print Runsheet", command=printRunsheet)
     print_button.grid(**padding)
 
     exit_button = ttk.Button(page3, text="Exit")

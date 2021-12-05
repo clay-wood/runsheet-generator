@@ -1,7 +1,7 @@
 """
-This project lets you try out Tkinter/Ttk and practice it!
-Authors: Clay Wood, Raphael Affinito.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+AUTHOR: CLAY EMERSON WOOD
+CONTRIBUTORS/TESTERS: RAPHAEL AFFINITO
+""" 
 
 import tkinter as tk
 from tkinter import ttk
@@ -9,12 +9,12 @@ from tkinter.scrolledtext import ScrolledText
 
 import os
 import datetime
-from make_runsheet_v2 import write_runsheet
+from constructRunsheet import write_runsheet
 import webbrowser
 
 
 def main():
-    """ Constructs a GUI that will be used MUCH later to control EV3. """
+    """ Constructs a GUI """
     root = tk.Tk()
     root.title("Runsheet Generator")
     root.geometry("1200x900")

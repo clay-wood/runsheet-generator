@@ -3,14 +3,15 @@
 from setuptools import setup, find_packages
 
 setup(name='runsheetGen', 
-    version='0.1',
+    version='0.1.1',
     author='Clay Wood',   
-    packages=find_packages(),
+    packages=['runsheetGen', 
+        'runsheetGen.test'],
     scripts=['runsheetGen/scripts/runsheetGen.py', 'runsheetGen/scripts/constructRunsheet.py'],
     # url='http://pypi.python.org/pypi/runsheetGen/',
     package_data={'runsheetGen': ['templates/runsheetTemplate.tex']},
-    # install_requires=[
-    #     "pandas >= 1.1.1",
-    #     "numpy >= 1.10.0",
-    # ],
+    install_requires=[
+        "pandas >= 1.1.1",
+        "numpy >= 1.10.0",
+    ],
 )

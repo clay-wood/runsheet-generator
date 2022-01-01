@@ -270,7 +270,7 @@ runsheet_header = '''\\documentclass[letterpaper, 10pt]{article}
 
 def write_runsheet(outputs, tex='no'):
     
-    [exp_name, pick_date, op_name, hyd_start, hyd_end, temp, humid, data_logger, ctrl, 
+    [exp_name, op_name, pick_date, hyd_start, hyd_end, temp, humid, data_logger, ctrl, 
     purpose, sample_blk, ac_blk, material, part_size, bench_thk, preCom_thk, postCom_thk, empty1, empty2, matWeight1, matWeight2, sampleBlk_weight1, sampleBlk_weight2, gougeWeight1, gougeWeight2,
     area, h_lc_picker, h_lc_calib, h_lc_stress, h_lc_ini_V, v_lc_picker, v_lc_calib, v_lc_stress, v_lc_ini_V, 
     use_vessel, pore_fluid, pc_gain, pc_press, pc_ini_V, ppa_gain, ppa_press, ppa_ini_V, ppb_gain, ppb_press, ppb_ini_V, 

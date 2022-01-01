@@ -53,7 +53,7 @@ def sec2(purpose, sample_blk, ac_blk, material, part_size, bench_thk, preCom_thk
     else:
         sec2_samp = '''Sample Block Used and Thickness with \\textbf{no} Sample: '''+ac_blk+''' \\\\'''
 
-    part1 = part1_hdr+sec2_samp+'''
+    part1 = part1_hdr+purpose2+sec2_samp+'''
 	\\end{tabular}
     \\end{table} \\vspace{-0.5cm} \n\n'''
 
